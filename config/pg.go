@@ -6,7 +6,7 @@ type pg struct {
 	Addr     string    `json:"addr"` // host:port
 	User     string    `json:"user"`
 	Password string    `json:"password"`
-	DataBase string    `json:"database"`
+	Datbase string    `json:"database"`
 	once     sync.Once
 }
 
