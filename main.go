@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"github.com/sirupsen/logrus"
+	"im.v2/model"
 	"log"
 	"net/http"
 	"os"
@@ -13,8 +15,16 @@ import (
 
 func main() {
 	engine := gin.Default()
+	engine.Use()
 
+	logrus.Infoln("开始设置路由...")
 	router.Register(engine)
+
+	logrus.Infoln("开始创建数据库表...")
+	if err := model.CreateTable(); err != nil {
+		logrus.Panic("创建数据库表失败:", err)
+		return
+	}
 
 	server := http.Server{
 		Addr:    ":8000",
@@ -31,6 +41,7 @@ func main() {
 		}
 	}()
 
+	logrus.Infoln("开始启动服务...")
 	if err := server.ListenAndServe(); err != http.ErrServerClosed {
 		log.Fatal("服务启动失败:", err)
 	}

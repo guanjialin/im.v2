@@ -13,9 +13,14 @@ var configOnce sync.Once
 
 const (
 	filePg = iota
+	fileRedis
+	fileSession
 )
+
 var config = map[int]string{
-	filePg : "/pg.json",
+	filePg:      "/pg.json",
+	fileRedis:   "/redis.json",
+	fileSession: "/session.json",
 }
 
 func init() {
@@ -33,7 +38,7 @@ func init() {
 	})
 }
 
-func parseFromJson(file string, model interface{})  {
+func parseFromJson(file string, model interface{}) {
 	content, err := ioutil.ReadFile(configDir + file)
 	if err != nil {
 		panic(fmt.Sprintf("读取配置文件[%s]失败: %s", file, err.Error()))

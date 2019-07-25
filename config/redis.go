@@ -2,20 +2,19 @@ package config
 
 import "sync"
 
-type pgConfig struct {
+type redisConfig struct {
 	Addr     string    `json:"addr"` // host:port
-	User     string    `json:"user"`
 	Password string    `json:"password"`
 	Database string    `json:"database"`
 	once     sync.Once
 }
 
-var pg pgConfig
+var redis redisConfig
 
-func PG() *pgConfig {
-	pg.once.Do(func() {
-		parseFromJson(config[filePg], &pg)
+func Redis() *redisConfig {
+	redis.once.Do(func() {
+		parseFromJson(config[fileRedis], &redis)
 	})
 
-	return &pg
+	return &redis
 }

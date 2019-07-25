@@ -1,9 +1,23 @@
 package model
 
 import (
+	"github.com/go-pg/pg"
+	"log"
+	"os"
 	"time"
-	"github.com/jinzhu/gorm"
 )
+
+func init()  {
+	pg.SetLogger(log.New(os.Stdout, "im", log.Llongfile))
+}
+
+var models = []basicInterface{
+	User{},
+}
+
+type basicInterface interface {
+	CreateTable() error
+}
 
 type basic struct {
 	ID       int64     `sql:"id, notnull"`
@@ -12,6 +26,13 @@ type basic struct {
 	DeleteAt time.Time `sql:"delete_at, type:timestamp with timezone"`
 }
 
-func Register() {
+func CreateTable() error {
+	for _, v := range models {
+		err := v.CreateTable()
+		if err != nil {
+			return err
+		}
+	}
 
+	return nil
 }

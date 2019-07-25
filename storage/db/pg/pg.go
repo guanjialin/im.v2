@@ -1,16 +1,16 @@
 package pg
 
 import (
+	"im.v2/config"
 	"sync"
 
 	"github.com/go-pg/pg"
-	"im.v2/config"
 )
 
 var db *pg.DB
 var dbOnce sync.Once
 
-func init() {
+func DB() *pg.DB {
 	dbOnce.Do(func() {
 		db = pg.Connect(&pg.Options{
 			Addr:     config.PG().Addr,
@@ -19,8 +19,6 @@ func init() {
 			Database: config.PG().Database,
 		})
 	})
-}
 
-func DB() *pg.DB {
 	return db
 }
