@@ -2,14 +2,14 @@ package main
 
 import (
 	"context"
-	"github.com/sirupsen/logrus"
-	"im.v2/model"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
+	"im.v2/model"
 	"im.v2/router"
 )
 
@@ -17,12 +17,12 @@ func main() {
 	engine := gin.Default()
 	engine.Use()
 
-	logrus.Infoln("开始设置路由...")
+	logrus.Infoln("init router...")
 	router.Register(engine)
 
-	logrus.Infoln("开始创建数据库表...")
-	if err := model.CreateTable(); err != nil {
-		logrus.Panic("创建数据库表失败:", err)
+	logrus.Infoln("init database table...")
+	if err := model.InitTable(); err != nil {
+		logrus.Panic("init database table failure:", err)
 		return
 	}
 
@@ -41,10 +41,10 @@ func main() {
 		}
 	}()
 
-	logrus.Infoln("开始启动服务...")
+	logrus.Infoln("server start at :8000")
 	if err := server.ListenAndServe(); err != http.ErrServerClosed {
-		log.Fatal("服务启动失败:", err)
+		log.Fatal("server start failure:", err)
 	}
 
-	log.Println("server closed")
+	logrus.Infoln("server stop...")
 }
