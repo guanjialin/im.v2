@@ -5,6 +5,7 @@ import (
 )
 
 const (
+	prefixUser = "/user"
 	prefixError = "/error"
 )
 

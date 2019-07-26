@@ -15,12 +15,14 @@ const (
 	filePg = iota
 	fileRedis
 	fileSession
+	fileGithub
 )
 
 var config = map[int]string{
 	filePg:      "/pg.json",
 	fileRedis:   "/redis.json",
 	fileSession: "/session.json",
+	fileGithub:  "/github.json",
 }
 
 func init() {
