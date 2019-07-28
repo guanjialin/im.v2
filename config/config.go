@@ -1,11 +1,13 @@
 package config
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"sync"
+
+	"github.com/sirupsen/logrus"
+
+	"im.v2/utils"
 )
 
 var configDir string
@@ -33,20 +35,18 @@ func init() {
 		}
 
 		for _, file := range config {
-			if _, err := os.Stat(configDir + file); os.IsNotExist(err) {
-				panic(fmt.Sprintf("配置文件 %s 不存在", file))
+			if !utils.FileExist(configDir + file) {
+				panic(fmt.Sprintf("配置文件 %s 不存在", configDir+file))
 			}
 		}
 	})
 }
 
-func parseFromJson(file string, model interface{}) {
-	content, err := ioutil.ReadFile(configDir + file)
+func parse(file string, model interface{}) {
+	err := utils.FileParseToJson(configDir+file, model)
 	if err != nil {
-		panic(fmt.Sprintf("读取配置文件[%s]失败: %s", file, err.Error()))
+		logrus.Panicf("解析配置文件: %s 失败: %s", file, err)
+		return
 	}
-
-	if err := json.Unmarshal(content, &model); err != nil {
-		panic(fmt.Sprintf("解析json失败:%s", err.Error()))
-	}
+	logrus.Debugf("config: %#v", model)
 }

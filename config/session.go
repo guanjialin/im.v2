@@ -1,6 +1,8 @@
 package config
 
-import "sync"
+import (
+	"sync"
+)
 
 type sessionConfig struct {
 	SecretKey string `json:"secret_key"`
@@ -12,7 +14,7 @@ var session sessionConfig
 
 func Session() *sessionConfig {
 	redis.once.Do(func() {
-		parseFromJson(config[fileSession], &session)
+		parse(config[fileSession], &session)
 	})
 
 	return &session

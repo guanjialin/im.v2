@@ -1,6 +1,8 @@
 package config
 
-import "sync"
+import (
+	"sync"
+)
 
 type pgConfig struct {
 	Addr     string    `json:"addr"` // host:port
@@ -15,7 +17,7 @@ var pg pgConfig
 
 func PG() *pgConfig {
 	pg.once.Do(func() {
-		parseFromJson(config[filePg], &pg)
+		parse(config[filePg], &pg)
 	})
 
 	return &pg

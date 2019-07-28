@@ -1,19 +1,21 @@
 package config
 
-import "sync"
+import (
+	"sync"
+)
 
 type githubConfig struct {
-	URL          string `json:"url"`
-	ClientID     string `json:"client_id"`
-	ClientSecret string `json:"client_secret"`
-	once         sync.Once
+	AccessTokenURL string `json:"access_token_url"`
+	ClientID       string `json:"client_id"`
+	ClientSecret   string `json:"client_secret"`
+	once           sync.Once
 }
 
 var github githubConfig
 
 func Github() *githubConfig {
 	github.once.Do(func() {
-		parseFromJson(config[fileGithub], &github)
+		parse(config[fileGithub], &github)
 	})
 
 	return &github

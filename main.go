@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"im.v2/model"
 	"log"
 	"net/http"
 	"os"
@@ -9,22 +10,23 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"im.v2/model"
 	"im.v2/router"
 )
 
 func main() {
 	engine := gin.Default()
-	engine.Use()
+
+	go func() {
+		logrus.Info("init database table...")
+		if err := model.InitTable(); err != nil {
+			logrus.Panic("init database table failure:", err)
+			return
+		}
+		logrus.Info("init database finished.")
+	}()
 
 	logrus.Infoln("init router...")
 	router.Register(engine)
-
-	logrus.Infoln("init database table...")
-	if err := model.InitTable(); err != nil {
-		logrus.Panic("init database table failure:", err)
-		return
-	}
 
 	server := http.Server{
 		Addr:    ":8000",

@@ -13,5 +13,5 @@ func login(e *gin.Engine) {
 	group.Handle(http.MethodPost, "/signin", user.Signin)
 	group.Handle(http.MethodPost, "/signup", user.Signup)
 	group.Handle(http.MethodDelete, "/signout", user.Signout)
-	group.Handle(http.MethodGet, "/oauth", user.OAuth)
+	group.Handle(http.MethodGet, "/oauth/redirect", user.OAuth)
 }

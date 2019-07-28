@@ -10,4 +10,5 @@ const (
 )
 
 func Register(e *gin.Engine)  {
+	login(e)
 }

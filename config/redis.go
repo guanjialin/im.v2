@@ -1,6 +1,8 @@
 package config
 
-import "sync"
+import (
+	"sync"
+)
 
 type redisConfig struct {
 	Addr     string    `json:"addr"` // host:port
@@ -13,7 +15,7 @@ var redis redisConfig
 
 func Redis() *redisConfig {
 	redis.once.Do(func() {
-		parseFromJson(config[fileRedis], &redis)
+		parse(config[fileRedis], &redis)
 	})
 
 	return &redis
